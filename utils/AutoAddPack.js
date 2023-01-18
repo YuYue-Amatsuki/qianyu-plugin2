@@ -119,4 +119,4 @@ async function execsync(cmd) {
 //     logger.mark(chalk.rgb(0, 255, 0)('cnpm安装依赖失败！'))
 // }
 
-export default { AddPack, restart }
+export default { AddPack, restart, addAllPack }
