@@ -1,11 +1,12 @@
 import { createRequire } from 'module'
 import { segment } from 'oicq';
+import config from '../../lib/config';
 import sharp from "sharp"
 
 const require = createRequire(import.meta.url)
 const fs = require('fs')
 
-let filepath = process.cwd() + '/plugins/qianyu/app/Bqb'
+let filepath = config.qianyuPath + '/app/Bqb'
 
 // async function getMetadata() {
 //     try {
