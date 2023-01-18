@@ -7,7 +7,7 @@ const { exec, execSync } = require("child_process");
 
 // 是否在更新中
 let uping = false;
-
+let that;
 let apps = {
     id: 'update',
     name: '更新插件',
@@ -23,15 +23,14 @@ apps.rule.push({
     fuc: update
 })
 
-let that;
-
 /**
  * rule - 更新千羽2插件
  * @returns
  */
-async function update() {
-    that = this
-    if (!that.e.isMaster) return false;
+async function update(e) {
+    console.log(e);
+    that = e
+    if (!e.isMaster) return false;
 
     /** 检查是否正在更新中 */
     if (uping) {
@@ -42,7 +41,7 @@ async function update() {
     /** 检查git安装 */
     if (!(await checkGit())) return;
 
-    const isForce = that.e.msg.includes("强制");
+    const isForce = e.msg.includes("强制");
 
     /** 执行更新 */
     await runUpdate(isForce);
@@ -55,7 +54,7 @@ async function update() {
 }
 
 function restart() {
-    new Restart(that.e).restart()
+    new Restart(that).restart()
 }
 
 /**
@@ -67,9 +66,9 @@ async function runUpdate(isForce) {
     let command = "git -C ./plugins/qianyu-plugin2/ pull --no-rebase";
     if (isForce) {
         command = `git -C ./plugins/qianyu-plugin2/ checkout . && ${command}`;
-        that.e.reply("正在执行强制更新操作，请稍等");
+        that.reply("正在执行强制更新操作，请稍等");
     } else {
-        that.e.reply("正在执行更新操作，请稍等");
+        that.reply("正在执行更新操作，请稍等");
     }
     /** 获取上次提交的commitId，用于获取日志时判断新增的更新日志 */
     that.oldCommitId = await getcommitId("qianyu-plugin2");
@@ -78,7 +77,7 @@ async function runUpdate(isForce) {
     uping = false;
 
     if (ret.error) {
-        logger.mark(`${that.e.logFnc} 更新失败：千羽2插件`);
+        logger.mark(`${that.logFnc} 更新失败：千羽2插件`);
         gitErr(ret.error, ret.stdout);
         return false;
     }
@@ -96,7 +95,7 @@ async function runUpdate(isForce) {
         await that.reply(log);
     }
 
-    logger.mark(`${that.e.logFnc} 最后更新时间：${time}`);
+    logger.mark(`${that.logFnc} 最后更新时间：${time}`);
 
     return true;
 }
@@ -184,8 +183,8 @@ async function getTime(plugin = "") {
  */
 async function makeForwardMsg(title, msg, end) {
     let nickname = Bot.nickname;
-    if (that.e.isGroup) {
-        let info = await Bot.getGroupMemberInfo(that.e.group_id, Bot.uin);
+    if (that.isGroup) {
+        let info = await Bot.getGroupMemberInfo(that.group_id, Bot.uin);
         nickname = info.card || info.nickname;
     }
     let userInfo = {
@@ -212,10 +211,10 @@ async function makeForwardMsg(title, msg, end) {
     }
 
     /** 制作转发内容 */
-    if (that.e.isGroup) {
-        forwardMsg = await that.e.group.makeForwardMsg(forwardMsg);
+    if (that.isGroup) {
+        forwardMsg = await that.group.makeForwardMsg(forwardMsg);
     } else {
-        forwardMsg = await that.e.friend.makeForwardMsg(forwardMsg);
+        forwardMsg = await that.friend.makeForwardMsg(forwardMsg);
     }
 
     /** 处理描述 */
