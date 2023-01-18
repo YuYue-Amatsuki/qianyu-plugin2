@@ -1,6 +1,6 @@
 import { createRequire } from 'module'
 import { segment } from 'oicq';
-import config from '../../lib/config';
+import config from '../../lib/config.js';
 import sharp from "sharp"
 
 const require = createRequire(import.meta.url)
