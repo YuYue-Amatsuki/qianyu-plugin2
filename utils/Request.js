@@ -3,7 +3,8 @@ import fetch from "node-fetch";
 export default async function request(data, suc, fail) {
     try {
         let rep, response;
-        data.url = data.parms ? data.url += data.parms : ''
+        data.url = data.parms ? data.url += data.parms : data.url
+        console.log(data.url);
         response = await fetch(data.url, { headers: data.headers });
         if (response.headers.get('content-type').includes('text/html')) {
             rep = await response.text();
@@ -22,10 +23,14 @@ export default async function request(data, suc, fail) {
                     dc = dc[data.data[i]]
                 }
             }
-            dc = rep
+            rep = dc
         }
         suc({ data: rep, responseStatus: response.status })
     } catch (error) {
-        fail('请求错误！')
+        console.log(error);
+        if (fail) {
+            fail('请求错误！')
+        }
+
     }
 }

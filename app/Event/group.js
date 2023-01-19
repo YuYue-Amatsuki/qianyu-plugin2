@@ -48,6 +48,7 @@ let Groupset = {
 let msglist = ['我看到你说要女装了，撤回没用！', '你为什么要撤回你的女装照！', '你说要给我主人包一个大红，我看到了！', '撤回干嘛，让我康康！', '?']
 
 async function accept(e) {
+
     let msg;
     let groupset = JSON.parse(await redis.get('qianyu:groupset')) || Groupset
     switch (e.sub_type) {

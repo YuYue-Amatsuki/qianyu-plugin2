@@ -2,7 +2,6 @@ import fs from 'fs'
 import YAML from 'yaml'
 import lodash from 'lodash'
 import chokidar from 'chokidar'
-// import Constant from '../server/constant/Constant.js'
 
 export default class YamlReader {
   /**
@@ -79,8 +78,9 @@ export default class YamlReader {
     if (Array.isArray(data)) {
       this.document.setIn(this.mapParentKeys(parentKeys), data)
     } else if (typeof data === 'object' && data !== null) {
-      for (const [key, value] of Object.entries(data)) {
-        this.setDataRecursion(value, parentKeys.concat([key]))
+      console.log(data);
+      for (const k in data) {
+        this.setDataRecursion(data[k], parentKeys.concat(k))
       }
     } else {
       parentKeys = this.mapParentKeys(parentKeys)
@@ -91,8 +91,8 @@ export default class YamlReader {
   // 将数字key转为number类型，防止出现引号
   mapParentKeys(parentKeys) {
     return parentKeys.map((k) => {
-      if (k.startsWith(Constant.CONFIG_INTEGER_KEY)) {
-        return Number.parseInt(k.replace(Constant.CONFIG_INTEGER_KEY, ''))
+      if (k.startsWith('INTEGER__')) {
+        return Number.parseInt(k.replace('INTEGER__', ''))
       }
       return k
     })

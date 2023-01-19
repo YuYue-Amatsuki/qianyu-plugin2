@@ -1,0 +1,17 @@
+{
+  "name": "qianyu-plugin2",
+  "version": "2.0.0",
+  "description": "Yunzai-Bot插件",
+  "type": "module",
+  "module": "index.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "sharp": "^0.31.3"
+  },
+  "devDependencies": {},
+  "author": "think-first-sxs",
+  "license": "GPL-3.0-or-later"
+}

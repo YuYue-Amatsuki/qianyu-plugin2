@@ -1,25 +1,49 @@
 import { createRequire } from 'module'
+import config from '../lib/config.js'
 const require = createRequire(import.meta.url)
 const { exec } = require('child_process')
 import chalk from 'chalk'
 async function AddPack(pack) {
-    logger.mark(chalk.rgb(0, 255, 0)('使用pnpm安装------'))
-    logger.mark(chalk.rgb(0, 255, 0)('正在检测是否安装pnpm！'))
-    let pnpm = await checkPnpm()
-    if (pnpm != 'pnpm') {
-        logger.mark(chalk.rgb(0, 255, 0)('正在安装pnpm,请稍后！'))
-        pnpm = await execsync(` npm install pnpm -g`)
-    } else {
-        logger.mark(chalk.rgb(0, 255, 0)('正在使用pnpm安装依赖！'))
-        let pnpmin = await execsync(`pnpm add ${pack} -w`)
-        if (!pnpmin.error) {
-            logger.mark(chalk.rgb(0, 255, 0)(`pnpm安装依赖${pack}成功！`))
-            return true
-        } else {
-            logger.mark(chalk.rgb(0, 255, 0)(`pnpm安装依赖${pack}失败！摆烂了！你自己手动装吧！`))
+    let iscnpm = await execsync(`cnpm -v`)
+    logger.mark(chalk.rgb(0, 255, 0)('正在检测是否安装cnpm！'))
+    let cnpm;
+    if (iscnpm.error) {
+        logger.mark(chalk.rgb(0, 255, 0)('正在安装cnpm,请稍后！'))
+        cnpm = await execsync(` npm install -g cnpm --registry=http://registry.npmmirror.com`)
+        if (cnpm.error) {
+            logger.mark(chalk.rgb(0, 255, 0)('安装cnpm失败！'))
             return false
         }
     }
+    let cret;
+    if (!iscnpm.error) {
+        cret = await execsync(` cnpm install sharp`)
+        if (!cret.error) {
+            logger.mark(chalk.rgb(0, 255, 0)(`cnpm安装依赖${pack}成功！`))
+            return true
+        }
+    }
+    if (cret.error) {
+        logger.mark(chalk.rgb(0, 255, 0)(`cnpm安装依赖${pack}失败！摆烂了！你自己手动装吧！`))
+        return false
+    }
+    // logger.mark(chalk.rgb(0, 255, 0)('使用pnpm安装------'))
+    // logger.mark(chalk.rgb(0, 255, 0)('正在检测是否安装pnpm！'))
+    // let pnpm = await checkPnpm()
+    // if (pnpm != 'pnpm') {
+    //     logger.mark(chalk.rgb(0, 255, 0)('正在安装pnpm,请稍后！'))
+    //     pnpm = await execsync(` npm install pnpm -g`)
+    // } else {
+    //     logger.mark(chalk.rgb(0, 255, 0)('正在使用pnpm安装依赖！'))
+    //     let pnpmin = await execsync(`cnpm i ${pack}`)
+    //     if (!pnpmin.error) {
+    //         logger.mark(chalk.rgb(0, 255, 0)(`cnpm安装依赖${pack}成功！`))
+    //         return true
+    //     } else {
+    //         logger.mark(chalk.rgb(0, 255, 0)(`cnpm安装依赖${pack}失败！摆烂了！你自己手动装吧！`))
+    //         return false
+    //     }
+    // }
 }
 
 async function addAllPack() {
@@ -77,7 +101,7 @@ async function checkPnpm() {
 
 async function execsync(cmd) {
     return new Promise((resolve, reject) => {
-        exec(cmd, { windowsHide: true }, (error, stdout, stderr) => {
+        exec(cmd, { windowsHide: true, cwd: config.qianyuPath }, (error, stdout, stderr) => {
             resolve({ error, stdout, stderr })
         })
     })
@@ -119,4 +143,4 @@ async function execsync(cmd) {
 //     logger.mark(chalk.rgb(0, 255, 0)('cnpm安装依赖失败！'))
 // }
 
-export default { AddPack, restart, addAllPack }
+export default { AddPack, restart }
