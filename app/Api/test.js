@@ -2,7 +2,7 @@ import ApiMage from "../../component/ApiMage.js";
 import { request } from '../../utils/index.js'
 import { core } from 'oicq'
 let apps = {
-    id: 'music',
+    id: 'test',
     name: '千羽音乐管理器',
     desc: '千羽音乐管理器',
     event: 'message',

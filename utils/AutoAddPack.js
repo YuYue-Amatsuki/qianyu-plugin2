@@ -1,8 +1,10 @@
 import { createRequire } from 'module'
+import Runtime from "../../../lib/plugins/runtime.js"
 import config from '../lib/config.js'
+import chalk from 'chalk'
 const require = createRequire(import.meta.url)
 const { exec } = require('child_process')
-import chalk from 'chalk'
+const runtime = new Runtime()
 async function AddPack(pack) {
     let iscnpm = await execsync(`cnpm -v`)
     logger.mark(chalk.rgb(0, 255, 0)('正在检测是否安装cnpm！'))
@@ -81,6 +83,7 @@ async function restart() {
                 logger.mark(chalk.rgb(0, 255, 0)('重启成功，运行已由前台转为后台'))
                 logger.mark(chalk.rgb(0, 255, 0)(`查看日志请用命令：${npm} run log`))
                 logger.mark(chalk.rgb(0, 255, 0)(`停止后台运行命令：${npm} stop`))
+                Bot.pickUser(runtime.cfg.masterQQ[0]).sendMsg(`请发送#安装千羽依赖指令安装千羽依赖或者手动进行安装依赖！`)
                 process.exit()
             }
         })

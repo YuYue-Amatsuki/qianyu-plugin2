@@ -3,7 +3,7 @@ import config from '../../lib/config.js';
 import { addTextOnImage } from '../../component/MakeImg.js'
 let filepath = config.qianyuPath + '/resources/img/'
 let apps = {
-    id: 'comimg',
+    id: 'makeimg',
     name: '千羽图片生成',
     desc: '千羽图片生成',
     event: 'message',
