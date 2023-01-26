@@ -1,18 +1,9 @@
 - filename: imgApi
   name: 千羽图片管理器
   isopen: false
-- filename: test
-  name: 千羽音乐管理器
-  isopen: false
-- filename: update
-  name: 更新插件
-  isopen: false
 - filename: makeimg
   name: 千羽图片生成
   isopen: false
-- filename: group
-  name: 群事件检测
-  isopen: false
 - filename: img
   name: 千羽图片
-  isopen: true
+  isopen: false
