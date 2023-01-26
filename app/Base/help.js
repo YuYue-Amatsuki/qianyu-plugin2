@@ -15,7 +15,7 @@ apps.rule.push({
 })
 
 async function help(e) {
-    e.reply("你的笨比群主还没写帮助")
+
 }
 
 export default apps

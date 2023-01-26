@@ -13,3 +13,6 @@
 - filename: group
   name: 群事件检测
   isopen: false
+- filename: img
+  name: 千羽图片
+  isopen: false
